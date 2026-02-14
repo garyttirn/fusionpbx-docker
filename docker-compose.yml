@@ -1,0 +1,26 @@
+services:
+  fusionpbx:
+    build: .
+    container_name: fusionpbx
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - freeswitch_data:/var/lib/freeswitch
+      - freeswitch_etc:/etc/freeswitch
+      - freeswitch_nginx_etc:/etc/nginx
+      - freeswitch_logs:/var/log/freeswitch
+      - fusionpbx_www:/var/www/fusionpbx
+      - fusionpbx_db:/var/lib/postgresql/data
+    cap_add:
+      - SYS_NICE
+    ulimits:
+      rtprio: 99
+      memlock: -1
+
+volumes:
+  freeswitch_data:
+  freeswitch_etc:
+  freeswitch_nginx_etc:
+  freeswitch_logs:
+  fusionpbx_www:
+  fusionpbx_db:
