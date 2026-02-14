@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install basic tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     sudo curl wget git lsb-release gnupg unzip \
-    vim netcat-openbsd ssl-cert ca-certificates locales \
+    netcat-openbsd ssl-cert ca-certificates locales \
     && rm -rf /var/lib/apt/lists/*
 
 # Set locale
@@ -18,36 +18,34 @@ ENV LC_ALL=en_US.UTF-8
 RUN git clone --depth 1 https://github.com/fusionpbx/fusionpbx-install.sh.git /usr/src/fusionpbx-install.sh 
 
 # Run the official install script (Debian)
-RUN bash /usr/src/fusionpbx-install.sh/debian/install.sh && rm -rf /var/lib/apt/lists/*
-
-#Cleanup build-tools
-RUN apt-get purge -y \
+RUN bash /usr/src/fusionpbx-install.sh/debian/install.sh \
+    && apt-get purge -y \
     build-essential \
+    fail2ban \
     autoconf \
     automake \
     libtool \
     pkg-config \
     cmake \
     yasm \
-    git \
     wget \
     curl \
     gnupg \
     unzip \
     lsb-release \
-    sudo \
-    vim \
     *-dev \
     && apt-get autoremove -y --purge \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-#Cleanup unneeded files
-RUN rm -rf \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf \
     /usr/share/doc/* \
     /usr/share/man/* \
     /usr/share/locale/* \
-    /usr/src/freeswitch
+    /usr/src/freeswitch* \
+    /usr/src/sofia* \
+    /usr/src/libks \
+    /usr/src/spandsp \
+    /usr/src/*.zip
 
 # Volumes
 VOLUME ["/var/lib/freeswitch", "/etc/freeswitch", "/var/log/freeswitch", "/var/www/fusionpbx"]
