@@ -1,6 +1,7 @@
 services:
   fusionpbx:
     build: .
+    image: fusionpbx-docker-fusionpbx:latest
     container_name: fusionpbx
     restart: unless-stopped
     network_mode: "host"
@@ -16,7 +17,6 @@ services:
     ulimits:
       rtprio: 99
       memlock: -1
-
 volumes:
   freeswitch_data:
   freeswitch_etc:

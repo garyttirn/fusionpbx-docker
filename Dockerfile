@@ -34,6 +34,7 @@ RUN bash /usr/src/fusionpbx-install.sh/debian/install.sh \
     unzip \
     lsb-release \
     *-dev \
+    && apt-get install libspeex1 libspeexdsp1 \
     && apt-get autoremove -y --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
