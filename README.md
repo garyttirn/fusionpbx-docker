@@ -7,7 +7,7 @@ Key points:
 
 How to use:
 1. Build and start:
-   docker compose build
+   docker build --no-cache --progress=plain -t fusionpbx-docker . 2> build.log
    docker compose up -d
 
 Notes:

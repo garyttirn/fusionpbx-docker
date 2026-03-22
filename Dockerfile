@@ -3,25 +3,29 @@ FROM debian:trixie-slim
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install basic tools
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    sudo curl wget git lsb-release gnupg unzip \
-    netcat-openbsd ssl-cert ca-certificates locales \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
+    ca-certificates curl dialog gpg nano netcat-openbsd net-tools wget git locales \
+    lsb-release libtool-bin ssl-cert sudo systemd systemd-sysv unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # Set locale
-RUN locale-gen en_US.UTF-8
+RUN sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+RUN locale-gen
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
 # Add FusionPBX install script
 RUN git clone --depth 1 https://github.com/fusionpbx/fusionpbx-install.sh.git /usr/src/fusionpbx-install.sh 
+COPY install.sh /usr/src/fusionpbx-install.sh/debian/docker-install.sh
+COPY postgresql.sh /usr/src/fusionpbx-install.sh/debian/resources/docker-postgresql.sh
+COPY setup.sh /usr/src/fusionpbx-install.sh/debian/resources/setup.sh
+RUN chmod +x /usr/src/fusionpbx-install.sh/debian/install.sh /usr/src/fusionpbx-install.sh/debian/resources/setup.sh /usr/src/fusionpbx-install.sh/debian/resources/docker-postgresql.sh
 
-# Run the official install script (Debian)
-RUN bash /usr/src/fusionpbx-install.sh/debian/install.sh \
+# Run the modified install script (Debian Docker)
+RUN bash /usr/src/fusionpbx-install.sh/debian/docker-install.sh \
     && apt-get purge -y \
     build-essential \
-    fail2ban \
     autoconf \
     automake \
     libtool \
@@ -32,7 +36,6 @@ RUN bash /usr/src/fusionpbx-install.sh/debian/install.sh \
     curl \
     gnupg \
     unzip \
-    lsb-release \
     *-dev \
     && apt-get install libspeex1 libspeexdsp1 \
     && apt-get autoremove -y --purge \
@@ -41,7 +44,6 @@ RUN bash /usr/src/fusionpbx-install.sh/debian/install.sh \
     && rm -rf \
     /usr/share/doc/* \
     /usr/share/man/* \
-    /usr/share/locale/* \
     /usr/src/freeswitch* \
     /usr/src/sofia* \
     /usr/src/libks \
@@ -49,7 +51,7 @@ RUN bash /usr/src/fusionpbx-install.sh/debian/install.sh \
     /usr/src/*.zip
 
 # Volumes
-VOLUME ["/var/lib/freeswitch", "/etc/freeswitch", "/var/log/freeswitch", "/var/www/fusionpbx"]
+VOLUME ["/var/lib/freeswitch", "/etc/freeswitch", "/etc/nginx", "/var/log/freeswitch", "/var/www/fusionpbx", "/var/lib/postgresql/data" ]
 
 # Copy entrypoint
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

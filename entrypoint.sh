@@ -7,6 +7,9 @@ for dir in /var/lib/freeswitch /usr/share/freeswitch /etc/freeswitch /var/log/fr
     chown -R www-data:www-data $dir || true
 done
 
+#Setup fusionpbx database if it doesn't exist
+/usr/src/fusionpbx-install.sh/debian/resources/setup.sh
+
 # Regenerate snakeoil certs if missing
 if [ ! -f /etc/ssl/private/ssl-cert-snakeoil.key ]; then
     echo "Generating default SSL certificate..."

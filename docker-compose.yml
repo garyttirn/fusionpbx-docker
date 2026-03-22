@@ -1,7 +1,7 @@
 services:
   fusionpbx:
     build: .
-    image: fusionpbx-docker-fusionpbx:latest
+    image: fusionpbx-docker:latest
     container_name: fusionpbx
     restart: unless-stopped
     network_mode: "host"
