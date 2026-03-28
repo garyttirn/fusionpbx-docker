@@ -34,7 +34,6 @@ resources/docker-postgresql.sh
 #FreeSWITCH
 resources/switch.sh
 
-#set the ip address
-server_address=$(hostname -I)
+#Finalize setup on first run if no database
 
 #EOF

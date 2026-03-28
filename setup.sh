@@ -11,10 +11,19 @@ cd "$(dirname "$0")"
 . ./colors.sh
 . ./environment.sh
 
-#generate a random password
-password=$(dd if=/dev/urandom bs=1 count=20 2>/dev/null | base64)
+#set the ip address
+server_address=$(hostname -I)
 
-#install message
+#database details
+
+#generate a random password
+password=$(dd if=/dev/urandom bs=1 count=20 2>/dev/null | base64 | sed 's/[=\+//]//g')
+database_username=fusionpbx
+database_password=$password
+
+#allow the script to use the new password
+export PGPASSWORD=$password
+
 echo "Create the database and users\n"
 
 if sudo -E  -u postgres psql fusionpbx -c '\q' 2>&1; then
@@ -37,21 +46,11 @@ sudo -E  -u postgres psql -c "CREATE DATABASE fusionpbx;";
 
 #add the users and grant permissions
 sudo -E  -u postgres psql -c "CREATE ROLE fusionpbx WITH SUPERUSER LOGIN PASSWORD '$password';"
-sudo -E  -u postgres psql -c "CREATE ROLE freeswitch WITH SUPERUSER LOGIN PASSWORD '$password';"
+#sudo -E  -u postgres psql -c "CREATE ROLE freeswitch WITH SUPERUSER LOGIN PASSWORD '$password';"
 sudo -E  -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE fusionpbx to fusionpbx;"
 
-#database details
-database_username=fusionpbx
-if [ .$database_password = .'random' ]; then
-	database_password=$(dd if=/dev/urandom bs=1 count=20 2>/dev/null | base64 | sed 's/[=\+//]//g')
-fi
-
-#allow the script to use the new password
-export PGPASSWORD=$database_password
-
-#update the database password
-sudo -E  -u postgres psql -c "ALTER USER fusionpbx WITH PASSWORD '$database_password';"
-sudo -E  -u postgres psql -c "ALTER USER freeswitch WITH PASSWORD '$database_password';"
+#in case DB was dropped on purpose and needs recreating
+sudo -E  -u postgres psql -c "ALTER USER fusionpbx WITH PASSWORD '$password';"
 
 cd $cwd
 

@@ -7,6 +7,10 @@ for dir in /var/lib/freeswitch /usr/share/freeswitch /etc/freeswitch /var/log/fr
     chown -R www-data:www-data $dir || true
 done
 
+# Start web stack
+service postgresql start
+service php8.2-fpm start
+
 #Setup fusionpbx database if it doesn't exist
 /usr/src/fusionpbx-install.sh/debian/resources/setup.sh
 
@@ -23,9 +27,6 @@ if [ ! -f /etc/ssl/private/nginx.key ]; then
     cp -f /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/ssl/certs/nginx.crt
 fi
 
-# Start web stack
-service postgresql start
-service php8.2-fpm start
 service nginx start
 
 # Start FreeSWITCH as root (or change to www-data if desired)
