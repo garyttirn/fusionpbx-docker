@@ -24,15 +24,15 @@ database_password=$password
 #allow the script to use the new password
 export PGPASSWORD=$password
 
-echo "Create the database and users\n"
-
 if sudo -E  -u postgres psql fusionpbx -c '\q' 2>&1; then
-   echo "database fusionpbx exists"
-   exit 1;
+   echo "Database fusionpbx exists, not creating"
+   return 0;
 fi
 
+echo "Create the database and users\n"
+
 #move to /tmp to prevent a red herring error when running sudo with psql
-cwd=$(pwd)
+cwd=/usr/src/fusionpbx-install.sh/debian/resources
 cd /tmp
 
 #reload the config
@@ -56,7 +56,7 @@ cd $cwd
 
 #add the config.conf
 mkdir -p /etc/fusionpbx
-cp fusionpbx/config.conf /etc/fusionpbx
+cp /usr/src/fusionpbx-install.sh/debian/resources/fusionpbx/config.conf /etc/fusionpbx
 sed -i /etc/fusionpbx/config.conf -e s:"{database_host}:$database_host:"
 sed -i /etc/fusionpbx/config.conf -e s:"{database_name}:$database_name:"
 sed -i /etc/fusionpbx/config.conf -e s:"{database_username}:$database_username:"

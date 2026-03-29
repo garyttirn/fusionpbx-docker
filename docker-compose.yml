@@ -10,6 +10,7 @@ services:
       - freeswitch_etc:/etc/freeswitch
       - freeswitch_nginx_etc:/etc/nginx
       - freeswitch_logs:/var/log/freeswitch
+      - fusionpbx_etc:/etc/fusionpbx
       - fusionpbx_www:/var/www/fusionpbx
       - fusionpbx_db:/var/lib/postgresql
     cap_add:
@@ -22,5 +23,6 @@ volumes:
   freeswitch_etc:
   freeswitch_nginx_etc:
   freeswitch_logs:
+  fusionpbx_etc:
   fusionpbx_www:
   fusionpbx_db:
