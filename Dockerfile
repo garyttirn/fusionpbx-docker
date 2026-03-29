@@ -51,7 +51,7 @@ RUN bash /usr/src/fusionpbx-install.sh/debian/docker-install.sh \
     /usr/src/*.zip
 
 # Volumes
-VOLUME ["/var/lib/freeswitch", "/etc/freeswitch", "/etc/nginx", "/var/log/freeswitch", "/var/www/fusionpbx", "/var/lib/postgresql/data" ]
+VOLUME ["/var/lib/freeswitch", "/etc/freeswitch", "/etc/nginx", "/var/log/freeswitch", "/etc/fusionpbx", "/var/www/fusionpbx", "/var/lib/postgresql/data" ]
 
 # Copy entrypoint
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

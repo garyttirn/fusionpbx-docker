@@ -2,7 +2,7 @@
 set -e
 
 # Fix permissions on directories used by FreeSWITCH
-for dir in /var/lib/freeswitch /usr/share/freeswitch /etc/freeswitch /var/log/freeswitch /var/www/fusionpbx; do
+for dir in /var/lib/freeswitch /usr/share/freeswitch /etc/freeswitch /var/log/freeswitch /var/www/fusionpbx /var/cache/fusionpbx; do
     mkdir -p $dir
     chown -R www-data:www-data $dir || true
 done
