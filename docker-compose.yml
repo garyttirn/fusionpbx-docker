@@ -11,7 +11,7 @@ services:
       - freeswitch_nginx_etc:/etc/nginx
       - freeswitch_logs:/var/log/freeswitch
       - fusionpbx_www:/var/www/fusionpbx
-      - fusionpbx_db:/var/lib/postgresql/data
+      - fusionpbx_db:/var/lib/postgresql
     cap_add:
       - SYS_NICE
     ulimits:

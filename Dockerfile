@@ -4,8 +4,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install basic tools
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
-    ca-certificates curl dialog gpg nano netcat-openbsd net-tools wget git locales \
-    lsb-release libtool-bin ssl-cert sudo systemd systemd-sysv unzip \
+    ca-certificates curl dialog gpg nano netcat-openbsd net-tools wget git less locales \
+    lsb-release libtool-bin ssl-cert sngrep sudo systemd systemd-sysv unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # Set locale
