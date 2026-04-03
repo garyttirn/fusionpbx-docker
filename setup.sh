@@ -85,6 +85,10 @@ cd /tmp
 #add the domain name
 sudo -E  -u postgres psql --host=$database_host --port=$database_port --username=$database_username -c "insert into v_domains (domain_uuid, domain_name, domain_enabled) values('$domain_uuid', '$domain_name', 'true');"
 
+#Start Freeswitch to get switch configs
+echo "Start Freeswitch"
+/usr/bin/freeswitch -nc
+
 #run app defaults
 cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/core/upgrade/upgrade.php --defaults
 
@@ -120,6 +124,9 @@ sed -i /etc/freeswitch/autoload_configs/xml_cdr.conf.xml -e s:"{v_project_path}:
 sed -i /etc/freeswitch/autoload_configs/xml_cdr.conf.xml -e s:"{v_user}:$xml_cdr_username:"
 sed -i /etc/freeswitch/autoload_configs/xml_cdr.conf.xml -e s:"{v_pass}:$xml_cdr_password:"
 
+#Run install to create swicth config
+cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/core/install/resources/classes/install.php
+
 #update application defaults
 cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/core/upgrade/upgrade.php --defaults
 
@@ -141,6 +148,10 @@ sed -i 's/listen \[::\].*/#listen \[::\]/g;s/listen 80;/listen 6080;/;s/listen 4
 
 #restart nginx
 /usr/sbin/service nginx start
+
+#Stop freeswitch, entrypoint runs it.
+echo "Stop Freeswitch"
+/usr/bin/freeswitch -stop
 
 #welcome message
 echo ""
