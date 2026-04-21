@@ -14,6 +14,10 @@ cd "$(dirname "$0")"
 #set the ip address
 server_address=$(hostname -I)
 
+#setup Freeswitch scripts
+cd /var/www/fusionpbx && cp -r app/switch/resources/scripts/* /usr/share/freeswitch/scripts/
+chown -R www-data:www-data /usr/share/freeswitch/scripts
+
 #database details
 
 #generate a random password
@@ -51,6 +55,7 @@ sudo -E  -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE fusionpbx to fusi
 
 #in case DB was dropped on purpose and needs recreating
 sudo -E  -u postgres psql -c "ALTER USER fusionpbx WITH PASSWORD '$password';"
+sudo -E  -u postgres psql -c "ALTER USER freeswitch WITH PASSWORD '$password';"
 
 cd $cwd
 
@@ -124,7 +129,7 @@ sed -i /etc/freeswitch/autoload_configs/xml_cdr.conf.xml -e s:"{v_project_path}:
 sed -i /etc/freeswitch/autoload_configs/xml_cdr.conf.xml -e s:"{v_user}:$xml_cdr_username:"
 sed -i /etc/freeswitch/autoload_configs/xml_cdr.conf.xml -e s:"{v_pass}:$xml_cdr_password:"
 
-#Run install to create swicth config
+#Run install to create switch config
 cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/core/install/resources/classes/install.php
 
 #update application defaults
@@ -152,6 +157,7 @@ sed -i 's/listen \[::\].*/#listen \[::\]/g;s/listen 80;/listen 6080;/;s/listen 4
 #Stop freeswitch, entrypoint runs it.
 echo "Stop Freeswitch"
 /usr/bin/freeswitch -stop
+rm -f /var/run/freeswitch/freeswitch.pid
 
 #welcome message
 echo ""

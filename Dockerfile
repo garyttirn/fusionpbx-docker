@@ -1,12 +1,32 @@
-FROM debian:trixie-slim
+FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install basic tools
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
     ca-certificates curl dialog gpg nano netcat-openbsd net-tools wget git less locales \
-    lsb-release libtool-bin ssl-cert sngrep sudo systemd systemd-sysv unzip \
-    && rm -rf /var/lib/apt/lists/*
+    lsb-release libtool-bin libspeex1 libspeexdsp1 liblua5.3 rsync ssl-cert sngrep sudo systemd systemd-sysv \
+    vim git dbus haveged ssl-cert qrencode ffmpeg ghostscript libtiff5-dev libtiff-tools \
+    autoconf automake devscripts g++ libncurses5-dev libtool libtool-bin make libjpeg-dev \
+    pkg-config flac  libgdbm-dev libdb-dev gettext sudo equivs dpkg-dev libpq-dev libtinfo6 \
+    liblua5.3-dev libtiff5-dev libperl-dev libcurl4-openssl-dev libsqlite3-dev libpcre2-dev libpcre2-8-0\
+    devscripts libspeexdsp-dev libspeex-dev libldns-dev libedit-dev libopus-dev libmemcached-dev \
+    libshout3-dev libmpg123-dev libmp3lame-dev yasm nasm libsndfile1-dev libuv1-dev libvpx-dev \
+    libavformat-dev libswscale-dev libvlc-dev sox libsox-fmt-all sqlite3 zip unzip cmake uuid-dev \
+    e2fsprogs e2fsprogs-l10n libcommon-sense-perl libjson-perl libjson-xs-perl \
+    libpq-dev libpq5 libss2 libtypes-serialiser-perl logrotate logsave python3-distutils-extra plocate openssl \
+    bsd-mailx exim4-base exim4-config exim4-daemon-light libfile-fcntllock-perl at \
+    liblockfile-bin liblockfile1 libnsl2 libapache2-mod-log-sql-ssl libfreetype6-dev git-buildpackage doxygen yasm nasm gdb \
+    build-essential automake autoconf 'libtool-bin|libtool' uuid-dev zlib1g-dev 'libjpeg8-dev|libjpeg62-turbo-dev' libncurses5-dev \
+    libssl-dev libcurl4-openssl-dev libldns-dev libedit-dev libspeexdsp-dev libspeexdsp-dev libsqlite3-dev perl libgdbm-dev libdb-dev bison \ 
+    libvlc-dev libvlccore-dev pkg-config ccache libpng-dev libvpx-dev libyuv-dev libopenal-dev libcodec2-dev \
+    libmongoc-dev libsoundtouch-dev libmagickcore-dev libopus-dev libsndfile-dev libopencv-dev \
+    libavformat-dev libx264-dev erlang-dev libldap2-dev libmemcached-dev libperl-dev portaudio19-dev \
+    libsnmp-dev libyaml-dev libpq-dev libvlc-dev memcached libshout3-dev libvpx-dev libmpg123-dev libmp3lame-dev gawk \
+    libpcre3 && rm -rf /var/lib/apt/lists/*
+
+# Packages to add for trixie support
+# libext2fs2t64 libicu76
 
 # Set locale
 RUN sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
@@ -32,12 +52,8 @@ RUN bash /usr/src/fusionpbx-install.sh/debian/docker-install.sh \
     pkg-config \
     cmake \
     yasm \
-    wget \
-    curl \
     gnupg \
-    unzip \
     *-dev \
-    && apt-get install libspeex1 libspeexdsp1 \
     && apt-get autoremove -y --purge \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \

@@ -1,11 +1,14 @@
 #!/bin/bash
 set -e
 
-# Fix permissions on directories used by FreeSWITCH
-for dir in /var/lib/freeswitch /usr/share/freeswitch /etc/freeswitch /var/log/freeswitch /var/www/fusionpbx /var/cache/fusionpbx; do
+# Fix permissions on directories used by FusionPBX and FreeSWITCH
+for dir in /var/lib/freeswitch /usr/share/freeswitch /etc/freeswitch /var/log/freeswitch /var/www/fusionpbx /var/run/fusionpbx /var/cache/fusionpbx /etc/fusionpbx; do
     mkdir -p $dir
     chown -R www-data:www-data $dir || true
 done
+
+#Fix permissions to allow cache clearing
+chmod 777 /var/cache/fusionpbx
 
 # Start web stack
 service postgresql start
