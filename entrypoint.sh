@@ -32,5 +32,18 @@ fi
 
 service nginx start
 
+#start FusionPBX services
+cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/xml_cdr/resources/service/xml_cdr.php  --daemon
+cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/transcribe/resources/service/transcribe_queue.php --daemon
+cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/event_guard/resources/service/event_guard.php --daemon
+
+#TODO
+#cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/core/websockets/resources/service/websockets.php --daemon
+#cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/active_calls/resources/service/active_calls.php &
+#cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/active_conferences/resources/service/active_conferences.php &
+#cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/fax_queue/resources/service/fax_queue.php &
+#cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/system/resources/service/system_status.php  &
+
+
 # Start FreeSWITCH as root (or change to www-data if desired)
 exec "$@"
