@@ -33,9 +33,9 @@ fi
 service nginx start
 
 #start FusionPBX services
-cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/xml_cdr/resources/service/xml_cdr.php  --daemon
-cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/transcribe/resources/service/transcribe_queue.php --daemon
-cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/event_guard/resources/service/event_guard.php --daemon
+cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/xml_cdr/resources/service/xml_cdr.php &
+cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/transcribe/resources/service/transcribe_queue.php &
+cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/app/event_guard/resources/service/event_guard.php &
 
 #TODO
 #cd /var/www/fusionpbx && /usr/bin/php /var/www/fusionpbx/core/websockets/resources/service/websockets.php --daemon
