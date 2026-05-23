@@ -32,10 +32,7 @@ apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommen
     libmongoc-dev libsoundtouch-dev libmagickcore-dev libopus-dev libsndfile-dev libopencv-dev \
     libavformat-dev libx264-dev erlang-dev libldap2-dev libmemcached-dev libperl-dev portaudio19-dev \
     libsnmp-dev libyaml-dev libpq-dev libvlc-dev memcached libshout3-dev libvpx-dev libmpg123-dev libmp3lame-dev \
-    libpcre3 && rm -rf /var/lib/apt/lists/*
-
-# Packages to add for trixie support
-# libext2fs2t64 libicu76
+    libpcre3 libext2fs2t64 libicu76 && rm -rf /var/lib/apt/lists/*
 
 #sngrep
 resources/sngrep.sh

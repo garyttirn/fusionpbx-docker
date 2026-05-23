@@ -1,4 +1,7 @@
-FROM debian:bookworm-slim
+#To build : 
+#  docker build --progress=plain -t fusionpbx-docker .
+
+FROM debian:trixie-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -6,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
     ca-certificates curl dialog gpg nano netcat-openbsd net-tools wget git less locales \
     lsb-release libtool-bin libspeex1 libspeexdsp1 liblua5.3 rsync ssl-cert sngrep sudo systemd systemd-sysv \
-    vim git dbus haveged ssl-cert qrencode ffmpeg libpcre3 \
+    vim git dbus haveged ssl-cert qrencode ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 # Set locale
